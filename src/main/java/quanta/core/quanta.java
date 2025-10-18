@@ -1,4 +1,4 @@
-package quanta.core;
+package src.main.java.quanta.core;
 
 import java.util.ArrayList;
 import java.util.List;

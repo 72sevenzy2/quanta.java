@@ -1,4 +1,4 @@
-package src.main.java.quanta.core;
+package quanta.core;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package src.main.java.quanta.core;
+package quanta.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,5 +19,17 @@ public class scheduler {
                 r.run();
             }
         }
+    }
+
+    // optional repeating scheduler handler
+
+    public void scheduleRepeat(long startTick, long interval, Runnable task) {
+        schedule(startTick, new Runnable() {
+            @Override
+            public void run() {
+                task.run();
+                scheduleRepeat(startTick + interval, interval, task);
+            }
+        });
     }
 }

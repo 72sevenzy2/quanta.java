@@ -1,4 +1,4 @@
-package src.main.java.quanta.core;
+package quanta.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +36,52 @@ public class quanta {
     private void tick() {
         tickCount++;
 
+        // for debugging
+        System.out.println("tick # " + tickCount);
+
         for (tickable t : tickables) {
             t.ontick(tickCount, delta * timeScale);
         }
         Scheduler.execute(tickCount);
+    }
+
+    // small but useful start and stop methods
+    public void start() {
+        // check if its already running
+        if (runnning) {
+            return;
+        }
+
+        runnning = true;
+
+        new Thread(() -> {
+            long tickInt = 1000 / ticksPerSecond;
+            while (runnning) {
+                long start = System.currentTimeMillis();
+
+                tick();
+
+                long duration = System.currentTimeMillis() - start;
+                long sleep = tickInt - duration;
+                if (sleep > 0) {
+                    try {
+                        Thread.sleep(sleep);
+                    } catch (InterruptedException error) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public void stop() {
+        runnning = false;
+    }
+
+    // setting custom time scales
+
+    public void setTimeScale(double timeScale) {
+        this.timeScale = timeScale;
     }
 
     public void scheduleIn(long ticksFromNow, Runnable task) {
@@ -47,6 +89,6 @@ public class quanta {
     }
 
     public long getTick() {
-        return tickCount++;
+        return tickCount;
     }
 }

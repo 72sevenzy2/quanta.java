@@ -1,4 +1,4 @@
-// FORT ESTING PURPOSES
+// FOR TESTING PURPOSES
 
 import quanta.core.quanta;
 
